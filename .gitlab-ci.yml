@@ -12,7 +12,7 @@ stages:
 #  - deploy
 
 maven-build:
-  image: maven:3-openjdk-11
+  image: maven:3-openjdk-17
   stage: build
   script: "mvn package -B"
   artifacts:
