@@ -1,0 +1,60 @@
+version: '2.2'
+services:
+
+  postgres_keycloak:
+    restart: always
+    image: postgres:11
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=keycloak
+    volumes:
+      - '${WEBROOT}/docker/volumes/keycloakpg:/var/lib/postgresql'
+    networks:
+      - code-network
+
+  postgres:
+    restart: always
+    image: postgres:11
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=javadev
+    volumes:
+      - '${WEBROOT}/docker/volumes/pg:/var/lib/postgresql'
+    networks:
+      - code-network
+
+  java:
+    restart: always
+    ports:
+      - "80:8081"
+    build:
+      context: .
+    networks:
+      - code-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_keycloak
+      DB_DATABASE: keycloak
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    ports:
+      - "9000:8080"
+    networks:
+      - code-network
+
+networks:
+  code-network:
+    driver: bridge

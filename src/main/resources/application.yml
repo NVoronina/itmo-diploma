@@ -1,0 +1,36 @@
+spring:
+  main:
+    allow-circular-references: true
+  config:
+    import: local.properties
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5431/javadev
+    username: ${PG_USER}
+    password: ${PG_PASSWORD}
+  flyway:
+    baseline-on-migrate: true
+server:
+  port: ${SERVER_PORT}
+keycloak:
+  auth-server-url: ${KEYCLOAK_HOST}
+  realm: medonline
+  resource: spring-security
+  public-client: false
+  security-constraints[0]:
+    securityCollections[0]:
+      patterns[0]: /api/v1/patient/*
+    authRoles[0]: regular_user
+  credentials:
+    secret: ${KEYCLOAK_SECRET}
+#  credentials: spring-public
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
