@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/auth")
 public class AuthController {
 
-    private KeycloakService keycloakService;
+    final private KeycloakService keycloakService;
 
     public AuthController(KeycloakService keycloakService) {
         this.keycloakService = keycloakService;

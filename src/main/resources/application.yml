@@ -10,11 +10,12 @@ spring:
       ddl-auto: update
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres:5431/javadev
+    url: jdbc:postgresql://${PG_HOST}/javadev
     username: ${PG_USER}
     password: ${PG_PASSWORD}
   flyway:
     baseline-on-migrate: true
+#    enabled: false
 server:
   port: ${SERVER_PORT}
 keycloak:
@@ -25,7 +26,8 @@ keycloak:
   security-constraints[0]:
     securityCollections[0]:
       patterns[0]: /api/v1/patient/*
-    authRoles[0]: regular_user
+    authRoles[0]: doctor_role
+    authRoles[1]: manager_role
   credentials:
     secret: ${KEYCLOAK_SECRET}
 #  credentials: spring-public
