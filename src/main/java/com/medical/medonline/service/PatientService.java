@@ -1,9 +1,14 @@
 package com.medical.medonline.service;
 
+import com.medical.medonline.dto.request.DoctorRequest;
+import com.medical.medonline.dto.request.PatientRequest;
+import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.entity.DoctorEntity;
 import com.medical.medonline.entity.PatientEntity;
+import com.medical.medonline.entity.UserEntity;
 import com.medical.medonline.exception.NotFoundException;
+import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.PatientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -15,11 +20,13 @@ import java.util.stream.Collectors;
 public class PatientService {
     private PatientRepository patientRepository;
     private DoctorService doctorService;
+    private UserService userService;
     private ModelMapper modelMapper;
 
-    public PatientService(PatientRepository patientRepository, DoctorService doctorService, ModelMapper modelMapper) {
+    public PatientService(PatientRepository patientRepository, DoctorService doctorService, UserService userService, ModelMapper modelMapper) {
         this.patientRepository = patientRepository;
         this.doctorService = doctorService;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -28,15 +35,37 @@ public class PatientService {
         List<PatientEntity> list = patientRepository.getByDoctorId(doctorId);
 
         return list.stream()
-                .map(patient -> {
-                    PatientResponse patientResponse = modelMapper.map(patient, PatientResponse.class);
-                    if (patient.getUser() != null) {
-                        patientResponse.setName(patient.getUser().getName());
-                        patientResponse.setSurname(patient.getUser().getSurname());
-                        patientResponse.setSecondName(patient.getUser().getSecondName());
-                    }
-                    return patientResponse;
-                })
+                .map(patient -> prepareResponse(patient))
                 .collect(Collectors.toList());
+    }
+
+    public PatientResponse createPatient(PatientRequest request) {
+        PatientEntity patientEntity = new PatientEntity();
+
+        if (request.getEmail() != null) {
+            UserEntity userEntity = userService.createUser(
+                    request.getEmail(),
+                    request.getName(),
+                    null,
+                    request.getSecondName(),
+                    request.getSurname());
+            patientEntity.setUser(userEntity);
+        }
+        patientEntity.setContactName(request.getContactName());
+        patientEntity.setContactPhone(request.getContactPhone());
+        patientEntity.setSnils(request.getSnils());
+        patientRepository.save(patientEntity);
+
+        return prepareResponse(patientEntity);
+    }
+
+    private PatientResponse prepareResponse(PatientEntity entity) {
+        PatientResponse response = modelMapper.map(entity, PatientResponse.class);
+        response.setName(entity.getUser().getName());
+        response.setSurname(entity.getUser().getSurname());
+        response.setSecondName(entity.getUser().getSecondName());
+        response.setEmail(entity.getUser().getEmail());
+
+        return response;
     }
 }

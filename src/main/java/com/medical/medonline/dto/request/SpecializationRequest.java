@@ -1,4 +1,4 @@
-package com.medical.medonline.dto.response;
+package com.medical.medonline.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceResponse {
-    private long id;
-    private String service;
+public class SpecializationRequest {
+    private String specialization;
 }

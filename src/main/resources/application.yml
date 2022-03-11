@@ -26,10 +26,12 @@ keycloak:
   security-constraints[0]:
     securityCollections[0]:
       patterns[0]: /api/v1/patient/*
-    authRoles[0]: doctor_role
-    authRoles[1]: manager_role
+      patterns[1]: /api/v1/specialization/*
+      patterns[2]: /api/v1/service/*
+    authRoles[0]: regular_user
   credentials:
     secret: ${KEYCLOAK_SECRET}
+  bearer-only: true
 #  credentials: spring-public
 
 

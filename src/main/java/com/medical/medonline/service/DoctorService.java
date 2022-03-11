@@ -2,10 +2,13 @@ package com.medical.medonline.service;
 
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
+import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.entity.DoctorEntity;
+import com.medical.medonline.entity.PatientEntity;
 import com.medical.medonline.entity.SpecializationEntity;
 import com.medical.medonline.entity.UserEntity;
 import com.medical.medonline.exception.NotFoundException;
+import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.DoctorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,7 @@ public class DoctorService {
         List<DoctorEntity> list = doctorRepository.getAllByServiceAndSpecialisation(specializationId, serviceId);
 
         return list.stream()
-                .map(doctor -> prepareDoctorResponse(doctor))
+                .map(doctor -> prepareResponse(doctor))
                 .collect(Collectors.toList());
     }
 
@@ -45,7 +48,10 @@ public class DoctorService {
         return modelMapper.map(doctorEntity, DoctorResponse.class);
     }
 
-    public DoctorResponse createDoctor(DoctorRequest request) {
+    public DoctorResponse createDoctor(DoctorRequest request) throws ValidationException {
+        if (request.getSpecializationId() == null) {
+            throw new ValidationException("Specialization couldn't be null", 1002);
+        }
         UserEntity userEntity = userService.createUser(
                 request.getEmail(),
                 request.getName(),
@@ -54,21 +60,22 @@ public class DoctorService {
                 request.getSurname());
         DoctorEntity doctorEntity = new DoctorEntity();
         doctorEntity.setUser(userEntity);
-        if (request.getSpecializationId() != null) {
-            doctorEntity.setSpecialization(specializationService.getById(request.getSpecializationId()));
+        SpecializationEntity specializationEntity = specializationService.getById(request.getSpecializationId());
+        if (specializationEntity != null) {
+            doctorEntity.setSpecialization(specializationEntity);
         }
         doctorRepository.save(doctorEntity);
 
-        return prepareDoctorResponse(doctorEntity);
+        return prepareResponse(doctorEntity);
     }
 
-    private DoctorResponse prepareDoctorResponse(DoctorEntity doctor) {
-        DoctorResponse doctorResponse = modelMapper.map(doctor, DoctorResponse.class);
-        doctorResponse.setName(doctor.getUser().getName());
-        doctorResponse.setSurname(doctor.getUser().getSurname());
-        doctorResponse.setSecondName(doctor.getUser().getSecondName());
-        doctorResponse.setEmail(doctor.getUser().getEmail());
+    private DoctorResponse prepareResponse(DoctorEntity entity) {
+        DoctorResponse response = modelMapper.map(entity, DoctorResponse.class);
+        response.setName(entity.getUser().getName());
+        response.setSurname(entity.getUser().getSurname());
+        response.setSecondName(entity.getUser().getSecondName());
+        response.setEmail(entity.getUser().getEmail());
 
-        return doctorResponse;
+        return response;
     }
 }
