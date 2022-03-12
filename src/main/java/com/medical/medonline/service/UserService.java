@@ -17,8 +17,11 @@ public class UserService {
     }
 
     public UserEntity createUser(String email, String name, String phone, String secondName, String surname) {
-        if (email != null && userRepository.findUserEntityByEmail(email) != null) {
-            throw new ValidationException("Email " + email + " has already exists", 1001);
+        if (email != null) {
+            UserEntity userEntity = userRepository.findUserEntityByEmail(email);
+            if (userEntity != null) {
+                return userEntity;
+            }
         }
         UserEntity userEntity = new UserEntity();
         userEntity.setName(name);

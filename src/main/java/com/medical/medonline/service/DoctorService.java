@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @Service
 public class DoctorService {
 
-    private DoctorRepository doctorRepository;
-    private UserService userService;
-    private SpecializationService specializationService;
-    private ModelMapper modelMapper;
+    final private DoctorRepository doctorRepository;
+    final private UserService userService;
+    final private SpecializationService specializationService;
+    final private ModelMapper modelMapper;
 
     public DoctorService(DoctorRepository doctorRepository, UserService userService, SpecializationService specializationService, ModelMapper modelMapper) {
         this.doctorRepository = doctorRepository;

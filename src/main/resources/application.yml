@@ -28,6 +28,8 @@ keycloak:
       patterns[0]: /api/v1/patient/*
       patterns[1]: /api/v1/specialization/*
       patterns[2]: /api/v1/service/*
+      patterns[3]: /api/v1/doctor/*
+      patterns[4]: /api/v1/manager/*
     authRoles[0]: regular_user
   credentials:
     secret: ${KEYCLOAK_SECRET}
