@@ -2,7 +2,9 @@ package com.medical.medonline.controller;
 
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.request.PatientRequest;
+import com.medical.medonline.dto.request.PatientUpdateRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
+import com.medical.medonline.dto.response.ErrorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.entity.SpecializationEntity;
 import com.medical.medonline.repository.SpecializationRepository;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
@@ -19,11 +22,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,6 +39,8 @@ public class PatientControllerTests extends AbstractToken {
 
     @Autowired
     SpecializationRepository specializationRepository;
+
+    private static long patientCreatedId;
 
     @Test
     @Transactional
@@ -88,6 +93,7 @@ public class PatientControllerTests extends AbstractToken {
         String content = response.getContentAsString();
         PatientResponse responsePatient = objectMapper.readValue(content, PatientResponse.class);
 
+        patientCreatedId = responsePatient.getId();
         assertEquals(request.getName(), responsePatient.getName());
         assertEquals(request.getSecondName(), responsePatient.getSecondName());
         assertEquals(request.getSurname(), responsePatient.getSurname());
@@ -95,5 +101,45 @@ public class PatientControllerTests extends AbstractToken {
         assertEquals(request.getContactName(), responsePatient.getContactName());
         assertEquals(request.getContactPhone(), responsePatient.getContactPhone());
         assertEquals(request.getSnils(), responsePatient.getSnils());
+    }
+
+    @Test
+    @DependsOn({"shouldReturnedSuccessPost"})
+    public void shouldReturnedSuccessPut() throws Exception {
+
+        PatientUpdateRequest request = new PatientUpdateRequest(patientCreatedId, "Natali", "+78888888888");
+
+        MockHttpServletRequestBuilder requestBuilder = put("/api/v1/patient")
+                .header("Authorization", "Bearer " + TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request));
+
+        ResultActions perform = this.mockMvc.perform(requestBuilder);
+        MvcResult mvcResult = perform.andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+        String content = response.getContentAsString();
+        PatientResponse responsePatient = objectMapper.readValue(content, PatientResponse.class);
+
+        assertEquals(request.getContactName(), responsePatient.getContactName());
+        assertEquals(request.getContactPhone(), responsePatient.getContactPhone());
+    }
+
+    @Test
+    public void shouldReturnedFailPut() throws Exception {
+
+        PatientUpdateRequest request = new PatientUpdateRequest(100500, "Natali", "+78888888888");
+
+        MockHttpServletRequestBuilder requestBuilder = put("/api/v1/patient")
+                .header("Authorization", "Bearer " + TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request));
+
+        ResultActions perform = this.mockMvc.perform(requestBuilder).andExpect(status().is(404));
+        MvcResult mvcResult = perform.andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+        String content = response.getContentAsString();
+        ErrorResponse responsePatient = objectMapper.readValue(content, ErrorResponse.class);
+
+        assertEquals(4040, responsePatient.getCode());
     }
 }

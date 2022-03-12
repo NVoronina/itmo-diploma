@@ -2,6 +2,7 @@ package com.medical.medonline.service;
 
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.request.PatientRequest;
+import com.medical.medonline.dto.request.PatientUpdateRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.entity.DoctorEntity;
@@ -54,6 +55,16 @@ public class PatientService {
         patientEntity.setContactName(request.getContactName());
         patientEntity.setContactPhone(request.getContactPhone());
         patientEntity.setSnils(request.getSnils());
+        patientRepository.save(patientEntity);
+
+        return prepareResponse(patientEntity);
+    }
+
+    public PatientResponse updatePatient(PatientUpdateRequest patient) {
+
+        PatientEntity patientEntity = patientRepository.getById(patient.getId());
+        patientEntity.setContactPhone(patient.getContactPhone());
+        patientEntity.setContactName(patient.getContactName());
         patientRepository.save(patientEntity);
 
         return prepareResponse(patientEntity);

@@ -2,9 +2,11 @@ package com.medical.medonline.controller;
 
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.request.PatientRequest;
+import com.medical.medonline.dto.request.PatientUpdateRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.service.PatientService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,4 +33,9 @@ public class PatientController {
         return ResponseEntity.ok().body(patientService.createPatient(patient));
     }
 
+    @Tag(name = "Patients", description = "Create new Patient")
+    @PutMapping
+    public ResponseEntity<PatientResponse> updatePatient(@RequestBody PatientUpdateRequest patient) {
+        return ResponseEntity.ok().body(patientService.updatePatient(patient));
+    }
 }

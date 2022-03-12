@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,18 +44,19 @@ public class DoctorControllerTests extends AbstractToken {
     }
 
     @Test
+    @Transactional
     public void shouldReturnedSuccessPost() throws Exception {
+        SpecializationEntity specializationEntity = new SpecializationEntity();
+        specializationEntity.setSpecialization("Стоматолог");
+        specializationRepository.save(specializationEntity);
         DoctorRequest request = new DoctorRequest(
-                (long) 1,
+                specializationEntity.getId(),
                 "Peter",
                 "Doe",
                 "Petrovich",
                 "pete@gggg.ru",
                 new ArrayList<>()
         );
-        SpecializationEntity specializationEntity = new SpecializationEntity();
-        specializationEntity.setSpecialization("Стоматолог");
-        specializationRepository.save(specializationEntity);
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/doctor")
                 .header("Authorization", "Bearer " + TOKEN)

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -25,4 +26,8 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse(ex.getMessage(), ex.getCode()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> resourceValidationException(EntityNotFoundException ex) {
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse(ex.getMessage(), 4040), HttpStatus.NOT_FOUND);
+    }
 }
