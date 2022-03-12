@@ -31,7 +31,7 @@ class ServiceControllerTest extends AbstractToken {
     @Test
     public void shouldReturnedSuccessGetList() throws Exception {
         ResultActions perform = this.mockMvc.perform(get("/api/v1/service/list")
-                        .header("Authorization", "Bearer " + token))
+                        .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())
                 .andExpect(status().is(200));
         MvcResult mvcResult = perform.andReturn();
@@ -47,7 +47,7 @@ class ServiceControllerTest extends AbstractToken {
         ServiceRequest request = new ServiceRequest("new");
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/service")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
         ResultActions perform = this.mockMvc.perform(requestBuilder);
@@ -68,7 +68,7 @@ class ServiceControllerTest extends AbstractToken {
         ServiceRequest request = new ServiceRequest("test");
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/service")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
 

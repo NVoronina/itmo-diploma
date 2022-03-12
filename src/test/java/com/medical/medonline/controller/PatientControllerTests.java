@@ -5,7 +5,6 @@ import com.medical.medonline.dto.request.PatientRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.entity.SpecializationEntity;
-import com.medical.medonline.repository.DoctorRepository;
 import com.medical.medonline.repository.SpecializationRepository;
 import com.medical.medonline.service.DoctorService;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ public class PatientControllerTests extends AbstractToken {
 
         //todo save appointment
         ResultActions perform = this.mockMvc.perform(get("/api/v1/patient/list?doctorId=" + doctorResponse.getId())
-                .header("Authorization", "Bearer " + token))
+                .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())
                 .andExpect(status().is(200));
         MvcResult mvcResult = perform.andReturn();
@@ -80,7 +79,7 @@ public class PatientControllerTests extends AbstractToken {
         );
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/patient")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
         ResultActions perform = this.mockMvc.perform(requestBuilder);

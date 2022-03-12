@@ -1,11 +1,6 @@
 package com.medical.medonline.controller;
 
-import com.medical.medonline.dto.request.DoctorRequest;
-import com.medical.medonline.dto.request.ServiceRequest;
 import com.medical.medonline.dto.request.SpecializationRequest;
-import com.medical.medonline.dto.response.DoctorResponse;
-import com.medical.medonline.dto.response.ServiceResponse;
-import com.medical.medonline.entity.ServiceEntity;
 import com.medical.medonline.entity.SpecializationEntity;
 import com.medical.medonline.repository.SpecializationRepository;
 import org.junit.jupiter.api.Test;
@@ -17,8 +12,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,7 +29,7 @@ class SpecializationControllerTest extends AbstractToken {
     @Test
     public void shouldReturnedSuccessGetList() throws Exception {
         ResultActions perform = this.mockMvc.perform(get("/api/v1/specialization/list")
-                        .header("Authorization", "Bearer " + token))
+                        .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())
                 .andExpect(status().is(200));
         MvcResult mvcResult = perform.andReturn();
@@ -52,7 +45,7 @@ class SpecializationControllerTest extends AbstractToken {
         SpecializationRequest request = new SpecializationRequest("new");
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/specialization")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
         ResultActions perform = this.mockMvc.perform(requestBuilder);
@@ -73,7 +66,7 @@ class SpecializationControllerTest extends AbstractToken {
         SpecializationRequest request = new SpecializationRequest("test");
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/specialization")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
 

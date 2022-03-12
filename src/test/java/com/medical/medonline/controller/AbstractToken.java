@@ -1,49 +1,21 @@
 package com.medical.medonline.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.medical.medonline.dto.request.AuthRequest;
-import com.medical.medonline.dto.response.TokenResponse;
-import com.medical.medonline.repository.SpecializationRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 abstract public class AbstractToken {
-    protected static String token;
+
+    protected static final String TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJaTmNYbE90QW5WZVU0TDZFeHRUMjhiWmlubjluUXJDdEdmX2prNEtQRUhrIn0.eyJleHAiOjE2NDcwODQ1ODgsImlhdCI6MTY0NzA4NDI4OCwianRpIjoiNTY0NTkyNmUtYjRiNS00ZjNkLTllZDctZWEyOGY5ODlhOWUwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDAwL2F1dGgvcmVhbG1zL21lZG9ubGluZSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlMWRkOTY4ZC0wZTQ2LTQ4OWUtOTgyNy04NDRlOTNiMGM3NTciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzcHJpbmctc2VjdXJpdHkiLCJzZXNzaW9uX3N0YXRlIjoiOWJlMDkzZTEtZWNlYy00ZTMyLTk0NGMtZWNiMDMzYjFkYTMxIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJyZWd1bGFyX3VzZXIiLCJkZWZhdWx0LXJvbGVzLW1lZG9ubGluZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiI5YmUwOTNlMS1lY2VjLTRlMzItOTQ0Yy1lY2IwMzNiMWRhMzEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6InRlc3QifQ.MxnDuZ_GWL9Wdh3J2RtDp1M4T8dbywi8KzDQCsJqxAi3HRI5V-pYdNif3GkvRdBkz1ehq52FjigvSXiR3_ZMTQjcHk6ZGXlcnYvs_HipiPwCpeOJvf04PLWOsZdfYVNQlwbGvSGQdTPwqk1MKpxSBX4vqXjxFaR69U2EYNb3grtsO-bnV3XH7aCjX1a4vuQuJlpM2br_EKMM47y8kyi--zU0IULwRJF8wsG9rNo1R6ldeLHym6aJgO5mBw_hepvQQO0j96kY3MrG0F9-loU_XP3OOI0IEL2HpDd1v9P5OFyCZReL9tWf2_g6zxN7guvnoDK2MHWqfYlMR9qxiiBXLg";
 
     @Autowired
     protected MockMvc mockMvc;
 
     @Autowired
     protected ObjectMapper objectMapper;
-
-    @BeforeEach
-    public void setUpClass() throws Exception {
-        if (token != null) {
-            return;
-        }
-        AuthRequest request = new AuthRequest("test", "test");
-
-        MockHttpServletRequestBuilder requestBuilder = post("/api/v1/auth")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request));
-        ResultActions perform = this.mockMvc.perform(requestBuilder);
-        MvcResult mvcResult = perform.andReturn();
-        MockHttpServletResponse response = mvcResult.getResponse();
-        String content = response.getContentAsString();
-        TokenResponse tokenResponse = objectMapper.readValue(content, TokenResponse.class);
-        token = tokenResponse.getToken();
-    }
 
 }

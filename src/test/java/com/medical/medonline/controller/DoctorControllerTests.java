@@ -1,22 +1,15 @@
 package com.medical.medonline.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.medical.medonline.dto.request.AuthRequest;
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
-import com.medical.medonline.dto.response.TokenResponse;
 import com.medical.medonline.entity.SpecializationEntity;
 import com.medical.medonline.repository.SpecializationRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -38,7 +31,7 @@ public class DoctorControllerTests extends AbstractToken {
     @Test
     public void shouldReturnedSuccessGetList() throws Exception {
         ResultActions perform = this.mockMvc.perform(get("/api/v1/doctor/list")
-                .header("Authorization", "Bearer " + token))
+                .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())
                 .andExpect(status().is(200));
         MvcResult mvcResult = perform.andReturn();
@@ -64,7 +57,7 @@ public class DoctorControllerTests extends AbstractToken {
         specializationRepository.save(specializationEntity);
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/doctor")
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
         ResultActions perform = this.mockMvc.perform(requestBuilder);

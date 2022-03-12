@@ -13,17 +13,17 @@ spring:
   flyway:
     enabled: false
 keycloak:
-  auth-server-url: ${KEYCLOAK_HOST}
-  realm: medonline
-  resource: spring-security
+  auth-server-url: test
+  realm: test
+  resource: test
   public-client: false
   security-constraints[0]:
     securityCollections[0]:
       patterns[0]: /api/v1/patient/*
       patterns[1]: /api/v1/specialization/*
       patterns[2]: /api/v1/service/*
-    authRoles[0]: regular_user
+    authRoles[0]: test
   credentials:
-    secret: ${KEYCLOAK_SECRET}
+    secret: test
   bearer-only: true
 
