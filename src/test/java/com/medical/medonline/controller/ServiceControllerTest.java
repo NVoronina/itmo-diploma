@@ -44,7 +44,7 @@ class ServiceControllerTest extends AbstractToken {
 
     @Test
     public void shouldReturnedSuccessPost() throws Exception {
-        ServiceRequest request = new ServiceRequest("new");
+        ServiceRequest request = new ServiceRequest("new", null);
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/service")
                 .header("Authorization", "Bearer " + TOKEN)
@@ -65,7 +65,7 @@ class ServiceControllerTest extends AbstractToken {
         entity.setService("test");
         serviceRepository.save(entity);
 
-        ServiceRequest request = new ServiceRequest("test");
+        ServiceRequest request = new ServiceRequest("test", null);
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/service")
                 .header("Authorization", "Bearer " + TOKEN)

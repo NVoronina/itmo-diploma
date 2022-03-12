@@ -7,6 +7,10 @@ import com.medical.medonline.dto.response.ServiceResponse;
 import com.medical.medonline.dto.response.SpecializationResponse;
 import com.medical.medonline.service.ServiceService;
 import com.medical.medonline.service.SpecializationService;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +18,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/specialization")
+@SecurityScheme(
+        type= SecuritySchemeType.HTTP,
+        scheme="bearer",
+        name="Authorization",
+        bearerFormat="JWT"
+)
+@SecurityRequirement(name="Authorization")
+@Tag(name = "Specializations")
 public class SpecializationController {
 
     private SpecializationService specializationService;

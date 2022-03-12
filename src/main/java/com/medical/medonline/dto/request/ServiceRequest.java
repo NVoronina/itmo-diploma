@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ServiceRequest {
     private String service;
+    private Integer time;
 }

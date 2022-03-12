@@ -42,6 +42,7 @@ public class ServiceService {
         }
         ServiceEntity serviceEntity = new ServiceEntity();
         serviceEntity.setService(serviceName);
+        serviceEntity.setTime(serviceRequest.getTime());
         serviceRepository.save(serviceEntity);
 
         return modelMapper.map(serviceEntity, ServiceResponse.class);
