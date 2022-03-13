@@ -40,12 +40,9 @@ public class DoctorService {
                 .collect(Collectors.toList());
     }
 
-    public DoctorResponse getById(Long doctorId) throws NotFoundException {
-        Optional<DoctorEntity> doctorEntity = doctorRepository.findById(doctorId);
-        if (doctorEntity.isEmpty()) {
-            throw new NotFoundException("Doctor with id " + doctorId + " not found", 1000);
-        }
-        return modelMapper.map(doctorEntity, DoctorResponse.class);
+    public DoctorResponse getDoctorById(Long doctorId) throws NotFoundException {
+
+        return modelMapper.map(getById(doctorId), DoctorResponse.class);
     }
 
     public DoctorResponse createDoctor(DoctorRequest request) throws ValidationException {
@@ -77,5 +74,14 @@ public class DoctorService {
         response.setEmail(entity.getUser().getEmail());
 
         return response;
+    }
+
+    public DoctorEntity getById(Long doctorId) throws NotFoundException {
+        Optional<DoctorEntity> doctorEntity = doctorRepository.findById(doctorId);
+        if (doctorEntity.isEmpty()) {
+            throw new NotFoundException("Doctor with id " + doctorId + " not found", 1000);
+        }
+
+        return doctorEntity.get();
     }
 }

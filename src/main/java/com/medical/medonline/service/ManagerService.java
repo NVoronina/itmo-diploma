@@ -48,7 +48,6 @@ public class ManagerService {
 
     public void delete(long id) {
         ManagerEntity managerEntity = managerRepository.getById(id);
-        System.out.println(managerEntity.getId());
         if (managerEntity.getUser() != null) {
             managerRepository.delete(managerEntity);
         }

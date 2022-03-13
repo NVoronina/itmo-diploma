@@ -18,7 +18,7 @@ public class DoctorServiceTest {
 
     @Test
     public void getDoctorException() {
-        assertThrows(NotFoundException.class, () -> doctorService.getById((long)100500));
+        assertThrows(NotFoundException.class, () -> doctorService.getDoctorById((long)100500));
     }
 
 }

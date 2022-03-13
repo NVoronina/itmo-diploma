@@ -32,7 +32,7 @@ public class PatientService {
     }
 
     public List<PatientResponse> getPatientByDoctorId(Long doctorId) throws NotFoundException {
-        doctorService.getById(doctorId);
+        doctorService.getDoctorById(doctorId);
         List<PatientEntity> list = patientRepository.getByDoctorId(doctorId);
 
         return list.stream()
