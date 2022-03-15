@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -51,5 +52,5 @@ public class AppointmentEntity {
     Set<ServiceEntity> services;
 
     @Column(nullable = false)
-    private Date timeStart;
+    private LocalDateTime timeStart;
 }

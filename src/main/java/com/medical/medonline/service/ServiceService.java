@@ -14,12 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class ServiceService {
     private ServiceRepository serviceRepository;
     private ModelMapper modelMapper;
+
+    public final static Integer DEFAULT_TIME_RANGE = 30;
 
     public ServiceService(ServiceRepository serviceRepository, ModelMapper modelMapper) {
         this.serviceRepository = serviceRepository;
@@ -46,5 +49,9 @@ public class ServiceService {
         serviceRepository.save(serviceEntity);
 
         return modelMapper.map(serviceEntity, ServiceResponse.class);
+    }
+
+    public Set<ServiceEntity> getServicesByIds(List<Long> serviceIds) {
+        return serviceRepository.findAllByServiceIds(serviceIds);
     }
 }

@@ -25,7 +25,7 @@ import java.util.List;
 @Tag(name = "Patients", description = "Controls patients APIs")
 public class PatientController {
 
-    PatientService patientService;
+    final private PatientService patientService;
 
     public PatientController(PatientService patientService) {
         this.patientService = patientService;

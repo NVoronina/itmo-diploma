@@ -1,10 +1,7 @@
 package com.medical.medonline.controller;
 
-import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.request.DoctorsTimetableRequest;
-import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.DoctorsTimetableResponse;
-import com.medical.medonline.dto.response.ManagerResponse;
 import com.medical.medonline.service.DoctorsTimetableService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/timetable")
@@ -42,7 +38,7 @@ public class DoctorsTimetableController {
     @GetMapping("/list")
     public ResponseEntity<DoctorsTimetableResponse> getTimetables(@RequestParam Long doctorId) {
 
-        return ResponseEntity.ok().body(doctorsTimetableService.getTimetables(doctorId));
+        return ResponseEntity.ok().body(doctorsTimetableService.getWeekTimetables(doctorId));
     }
 
     @DeleteMapping ("/{id}")

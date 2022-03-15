@@ -3,10 +3,7 @@ package com.medical.medonline.service;
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
-import com.medical.medonline.entity.DoctorEntity;
-import com.medical.medonline.entity.PatientEntity;
-import com.medical.medonline.entity.SpecializationEntity;
-import com.medical.medonline.entity.UserEntity;
+import com.medical.medonline.entity.*;
 import com.medical.medonline.exception.NotFoundException;
 import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.DoctorRepository;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,12 +21,14 @@ public class DoctorService {
     final private DoctorRepository doctorRepository;
     final private UserService userService;
     final private SpecializationService specializationService;
+    final private ServiceService serviceService;
     final private ModelMapper modelMapper;
 
-    public DoctorService(DoctorRepository doctorRepository, UserService userService, SpecializationService specializationService, ModelMapper modelMapper) {
+    public DoctorService(DoctorRepository doctorRepository, UserService userService, SpecializationService specializationService, ServiceService serviceService, ModelMapper modelMapper) {
         this.doctorRepository = doctorRepository;
         this.userService = userService;
         this.specializationService = specializationService;
+        this.serviceService = serviceService;
         this.modelMapper = modelMapper;
     }
 
@@ -46,8 +46,14 @@ public class DoctorService {
     }
 
     public DoctorResponse createDoctor(DoctorRequest request) throws ValidationException {
+        DoctorEntity doctorEntity = new DoctorEntity();
+
         if (request.getSpecializationId() == null) {
             throw new ValidationException("Specialization couldn't be null", 1002);
+        }
+        if (request.getServiceIds() != null) {
+            Set<ServiceEntity> services = serviceService.getServicesByIds(request.getServiceIds());
+            doctorEntity.setServices(services);
         }
         UserEntity userEntity = userService.createUser(
                 request.getEmail(),
@@ -55,7 +61,6 @@ public class DoctorService {
                 null,
                 request.getSecondName(),
                 request.getSurname());
-        DoctorEntity doctorEntity = new DoctorEntity();
         doctorEntity.setUser(userEntity);
         SpecializationEntity specializationEntity = specializationService.getById(request.getSpecializationId());
         if (specializationEntity != null) {

@@ -30,12 +30,13 @@ keycloak:
       patterns[2]: /api/v1/service/*
       patterns[3]: /api/v1/doctor/*
       patterns[4]: /api/v1/manager/*
+      patterns[5]: /api/v1/timetable/*
+      patterns[6]: /api/v1/appointment/*
     authRoles[0]: regular_user
   credentials:
     secret: ${KEYCLOAK_SECRET}
   bearer-only: true
 #  credentials: spring-public
-
 
 springdoc:
   swagger-ui:

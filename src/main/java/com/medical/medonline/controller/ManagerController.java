@@ -1,10 +1,7 @@
 package com.medical.medonline.controller;
 
-import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.request.ManagerRequest;
-import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.ManagerResponse;
-import com.medical.medonline.service.DoctorService;
 import com.medical.medonline.service.ManagerService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

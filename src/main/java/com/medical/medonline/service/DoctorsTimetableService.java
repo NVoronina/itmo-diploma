@@ -1,14 +1,17 @@
 package com.medical.medonline.service;
 
 import com.medical.medonline.dto.request.DoctorsTimetableRequest;
-import com.medical.medonline.dto.response.DoctorsTimetableResponse;
+import com.medical.medonline.dto.response.*;
+import com.medical.medonline.entity.AppointmentEntity;
 import com.medical.medonline.entity.DoctorEntity;
 import com.medical.medonline.entity.DoctorsTimetableEntity;
+import com.medical.medonline.repository.AppointmentRepository;
 import com.medical.medonline.repository.DoctorsTimetableRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,9 +46,16 @@ public class DoctorsTimetableService {
         return modelMapper.map(doctorEntity, DoctorsTimetableResponse.class);
     }
 
-    public DoctorsTimetableResponse getTimetables(Long doctorId) {
+    public DoctorsTimetableResponse getWeekTimetables(Long doctorId) {
         DoctorEntity doctorEntity = doctorService.getById(doctorId);
-        return modelMapper.map(doctorEntity, DoctorsTimetableResponse.class);
+        return modelMapper.map(
+                doctorsTimetableRepository
+                        .getDoctorsTimetableEntitiesByDoctorAndTimeEndBeforeOrderByTimeEnd(
+                                doctorEntity,
+                                LocalDateTime.now().plusWeeks(1)
+                        ),
+                DoctorsTimetableResponse.class
+        );
     }
 
     public void delete(long id) {

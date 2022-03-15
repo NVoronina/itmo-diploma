@@ -9,11 +9,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DoctorRequest {
-    private Long specializationId;
-    private String name;
-    private String surname;
-    private String secondName;
-    private String email;
+public class AppointmentRequest {
+    private String timeStart;
+    private Long doctorId;
+    private Long patientId;
     List<Long> serviceIds;
 }

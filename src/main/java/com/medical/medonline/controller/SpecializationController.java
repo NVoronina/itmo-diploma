@@ -1,11 +1,7 @@
 package com.medical.medonline.controller;
 
-import com.medical.medonline.dto.request.ServiceRequest;
 import com.medical.medonline.dto.request.SpecializationRequest;
-import com.medical.medonline.dto.response.DoctorResponse;
-import com.medical.medonline.dto.response.ServiceResponse;
 import com.medical.medonline.dto.response.SpecializationResponse;
-import com.medical.medonline.service.ServiceService;
 import com.medical.medonline.service.SpecializationService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,7 +24,7 @@ import java.util.List;
 @Tag(name = "Specializations")
 public class SpecializationController {
 
-    private SpecializationService specializationService;
+    final private SpecializationService specializationService;
 
     public SpecializationController(SpecializationService specializationService) {
         this.specializationService = specializationService;

@@ -1,28 +1,25 @@
 package com.medical.medonline.service;
 
-import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.request.PatientRequest;
 import com.medical.medonline.dto.request.PatientUpdateRequest;
-import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
-import com.medical.medonline.entity.DoctorEntity;
 import com.medical.medonline.entity.PatientEntity;
 import com.medical.medonline.entity.UserEntity;
 import com.medical.medonline.exception.NotFoundException;
-import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.PatientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
-    private PatientRepository patientRepository;
-    private DoctorService doctorService;
-    private UserService userService;
-    private ModelMapper modelMapper;
+    final private PatientRepository patientRepository;
+    final private DoctorService doctorService;
+    final private UserService userService;
+    final private ModelMapper modelMapper;
 
     public PatientService(PatientRepository patientRepository, DoctorService doctorService, UserService userService, ModelMapper modelMapper) {
         this.patientRepository = patientRepository;
@@ -72,11 +69,21 @@ public class PatientService {
 
     private PatientResponse prepareResponse(PatientEntity entity) {
         PatientResponse response = modelMapper.map(entity, PatientResponse.class);
-        response.setName(entity.getUser().getName());
-        response.setSurname(entity.getUser().getSurname());
-        response.setSecondName(entity.getUser().getSecondName());
-        response.setEmail(entity.getUser().getEmail());
-
+        if (entity.getUser() != null) {
+            response.setName(entity.getUser().getName());
+            response.setSurname(entity.getUser().getSurname());
+            response.setSecondName(entity.getUser().getSecondName());
+            response.setEmail(entity.getUser().getEmail());
+        }
         return response;
+    }
+
+    public PatientEntity getById(Long id) throws NotFoundException {
+        Optional<PatientEntity> doctorEntity = patientRepository.findById(id);
+        if (doctorEntity.isEmpty()) {
+            throw new NotFoundException("Patient with id " + id + " not found", 1000);
+        }
+
+        return doctorEntity.get();
     }
 }
