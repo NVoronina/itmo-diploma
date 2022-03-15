@@ -15,7 +15,7 @@ public class KeycloakService {
     private String clientId;
     @Value("${keycloak.credentials.secret}")
     private String clientSecret;
-    final private KeycloakClient keycloakClient;
+    private final KeycloakClient keycloakClient;
 
     public KeycloakService(KeycloakClient keycloakClient) {
         this.keycloakClient = keycloakClient;

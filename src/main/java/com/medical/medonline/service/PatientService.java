@@ -12,14 +12,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PatientService {
-    final private PatientRepository patientRepository;
-    final private DoctorService doctorService;
-    final private UserService userService;
-    final private ModelMapper modelMapper;
+    private final PatientRepository patientRepository;
+    private final DoctorService doctorService;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
 
     public PatientService(PatientRepository patientRepository, DoctorService doctorService, UserService userService, ModelMapper modelMapper) {
         this.patientRepository = patientRepository;
@@ -33,8 +32,8 @@ public class PatientService {
         List<PatientEntity> list = patientRepository.getByDoctorId(doctorId);
 
         return list.stream()
-                .map(patient -> prepareResponse(patient))
-                .collect(Collectors.toList());
+                .map(this::prepareResponse)
+                .toList();
     }
 
     public PatientResponse createPatient(PatientRequest request) {

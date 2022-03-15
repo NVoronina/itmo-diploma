@@ -9,13 +9,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ManagerService {
-    final private ManagerRepository managerRepository;
-    final private ModelMapper modelMapper;
-    final private UserService userService;
+    private final ManagerRepository managerRepository;
+    private final ModelMapper modelMapper;
+    private final UserService userService;
 
     public ManagerService(ManagerRepository managerRepository, ModelMapper modelMapper, UserService userService) {
         this.managerRepository = managerRepository;
@@ -27,8 +26,8 @@ public class ManagerService {
         List<ManagerEntity> list = managerRepository.findAll();
 
         return list.stream()
-                .map(manager -> prepareResponse(manager))
-                .collect(Collectors.toList());
+                .map(this::prepareResponse)
+                .toList();
     }
 
     public ManagerResponse createManager(ManagerRequest request) throws ValidationException {

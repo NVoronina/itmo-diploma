@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
-    final private DoctorService doctorService;
-    final private PatientService patientService;
-    final private AppointmentRepository appointmentRepository;
-    final private ModelMapper modelMapper;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
+    private final AppointmentRepository appointmentRepository;
+    private final ModelMapper modelMapper;
 
     public AppointmentService(DoctorService doctorService, PatientService patientService, AppointmentRepository appointmentRepository, ModelMapper modelMapper) {
         this.doctorService = doctorService;
@@ -72,10 +72,10 @@ public class AppointmentService {
                     appointment.getServices()
                         .stream()
                         .map(serviceEntity -> modelMapper.map(serviceEntity, ServiceResponse.class))
-                        .collect(Collectors.toList())
+                        .toList()
                 );
             })
-            .collect(Collectors.toList());
+            .toList();
         response.setAppointments(list);
 
         return response;

@@ -11,12 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SpecializationService {
-    final private SpecializationRepository specializationRepository;
-    final private ModelMapper modelMapper;
+    private final SpecializationRepository specializationRepository;
+    private final ModelMapper modelMapper;
 
     public SpecializationService(SpecializationRepository specializationRepository, ModelMapper modelMapper) {
         this.specializationRepository = specializationRepository;
@@ -36,7 +35,7 @@ public class SpecializationService {
 
         return list.stream()
                 .map(specialization -> modelMapper.map(specialization, SpecializationResponse.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public SpecializationResponse createSpecialization(SpecializationRequest specializationRequest) {

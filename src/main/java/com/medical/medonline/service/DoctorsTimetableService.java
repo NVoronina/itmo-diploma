@@ -39,7 +39,7 @@ public class DoctorsTimetableService {
                     entity.setDoctor(doctorEntity);
                     return entity;
                 })
-                .collect(Collectors.toList());
+                .toList();
         doctorsTimetableRepository.saveAll(list);
         doctorEntity.setDoctorsTimetables(list);
 

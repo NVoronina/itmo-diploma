@@ -1,15 +1,14 @@
 package com.medical.medonline.service;
 
 import com.medical.medonline.entity.UserEntity;
-import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    ModelMapper modelMapper;
-    UserRepository userRepository;
+    private final ModelMapper modelMapper;
+    private final UserRepository userRepository;
 
     public UserService(ModelMapper modelMapper, UserRepository userRepository) {
         this.modelMapper = modelMapper;

@@ -2,7 +2,6 @@ package com.medical.medonline.service;
 
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
-import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.entity.*;
 import com.medical.medonline.exception.NotFoundException;
 import com.medical.medonline.exception.ValidationException;
@@ -13,16 +12,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
 
-    final private DoctorRepository doctorRepository;
-    final private UserService userService;
-    final private SpecializationService specializationService;
-    final private ServiceService serviceService;
-    final private ModelMapper modelMapper;
+    private final DoctorRepository doctorRepository;
+    private final UserService userService;
+    private final SpecializationService specializationService;
+    private final ServiceService serviceService;
+    private final ModelMapper modelMapper;
 
     public DoctorService(DoctorRepository doctorRepository, UserService userService, SpecializationService specializationService, ServiceService serviceService, ModelMapper modelMapper) {
         this.doctorRepository = doctorRepository;
@@ -36,8 +34,8 @@ public class DoctorService {
         List<DoctorEntity> list = doctorRepository.getAllByServiceAndSpecialisation(specializationId, serviceId);
 
         return list.stream()
-                .map(doctor -> prepareResponse(doctor))
-                .collect(Collectors.toList());
+                .map(this::prepareResponse)
+                .toList();
     }
 
     public DoctorResponse getDoctorById(Long doctorId) throws NotFoundException {

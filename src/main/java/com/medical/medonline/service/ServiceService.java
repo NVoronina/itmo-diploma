@@ -1,28 +1,22 @@
 package com.medical.medonline.service;
 
 import com.medical.medonline.dto.request.ServiceRequest;
-import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.dto.response.ServiceResponse;
-import com.medical.medonline.entity.DoctorEntity;
 import com.medical.medonline.entity.ServiceEntity;
-import com.medical.medonline.exception.NotFoundException;
 import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.ServiceRepository;
-import com.medical.medonline.repository.SpecializationRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class ServiceService {
-    private ServiceRepository serviceRepository;
-    private ModelMapper modelMapper;
+    private final ServiceRepository serviceRepository;
+    private final ModelMapper modelMapper;
 
-    public final static Integer DEFAULT_TIME_RANGE = 30;
+    public static final Integer DEFAULT_TIME_RANGE = 30;
 
     public ServiceService(ServiceRepository serviceRepository, ModelMapper modelMapper) {
         this.serviceRepository = serviceRepository;
@@ -34,7 +28,7 @@ public class ServiceService {
 
         return list.stream()
                 .map(service -> modelMapper.map(service, ServiceResponse.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ServiceResponse createService(ServiceRequest serviceRequest) {
