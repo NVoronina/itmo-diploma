@@ -16,19 +16,16 @@ import java.util.Optional;
 @Service
 public class PatientService {
     private final PatientRepository patientRepository;
-    private final DoctorService doctorService;
     private final UserService userService;
     private final ModelMapper modelMapper;
 
-    public PatientService(PatientRepository patientRepository, DoctorService doctorService, UserService userService, ModelMapper modelMapper) {
+    public PatientService(PatientRepository patientRepository, UserService userService, ModelMapper modelMapper) {
         this.patientRepository = patientRepository;
-        this.doctorService = doctorService;
         this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
     public List<PatientResponse> getPatientByDoctorId(Long doctorId) throws NotFoundException {
-        doctorService.getDoctorById(doctorId);
         List<PatientEntity> list = patientRepository.getByDoctorId(doctorId);
 
         return list.stream()
