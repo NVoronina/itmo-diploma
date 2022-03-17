@@ -22,6 +22,8 @@ public class DoctorsTimetableService {
     final private DoctorsTimetableRepository doctorsTimetableRepository;
     final private ModelMapper modelMapper;
 
+    // TODO: 17.03.2022 add job which will extend weekly schedule to next week if its not changed  
+
     public DoctorsTimetableService(DoctorService doctorService, DoctorsTimetableRepository doctorsTimetableRepository, ModelMapper modelMapper) {
         this.doctorService = doctorService;
         this.doctorsTimetableRepository = doctorsTimetableRepository;

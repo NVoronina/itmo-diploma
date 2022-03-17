@@ -19,6 +19,7 @@ public class SpecializationEntity {
     @Column(nullable = false)
     private long id;
 
+    // TODO: 17.03.2022 to Enum and many
     @Column(nullable = false)
     private String specialization;
 

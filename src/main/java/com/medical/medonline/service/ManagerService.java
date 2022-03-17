@@ -54,6 +54,7 @@ public class ManagerService {
 
     private ManagerResponse prepareResponse(ManagerEntity entity) {
         ManagerResponse response = modelMapper.map(entity, ManagerResponse.class);
+        // TODO: 17.03.2022 nice! fix it, put user with updatemethod in mapper
         response.setName(entity.getUser().getName());
         response.setSurname(entity.getUser().getSurname());
         response.setSecondName(entity.getUser().getSecondName());

@@ -23,6 +23,7 @@ public class SpecializationService {
     }
 
     public SpecializationEntity getById(Long id) {
+        // TODO: 17.03.2022 use orelseThrow
         Optional<SpecializationEntity> specializationEntity = specializationRepository.findById(id);
         if (specializationEntity.isEmpty()) {
             throw new NotFoundException("Specialization with id " + id + " not found", 1000);
@@ -33,6 +34,7 @@ public class SpecializationService {
     public List<SpecializationResponse> getSpecializations() {
         List<SpecializationEntity> list = specializationRepository.findAll();
 
+        // TODO: 17.03.2022 use  TypeReference approach
         return list.stream()
                 .map(specialization -> modelMapper.map(specialization, SpecializationResponse.class))
                 .toList();

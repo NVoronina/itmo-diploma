@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class DoctorsTimetableControllerTest extends AbstractToken {
 
-    @Autowired
+     @Autowired
     SpecializationRepository specializationRepository;
 
     @Autowired

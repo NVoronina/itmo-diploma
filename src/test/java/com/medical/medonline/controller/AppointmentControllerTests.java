@@ -39,6 +39,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class AppointmentControllerTests extends AbstractToken {
 
+    // TODO: 17.03.2022 add test with double attmpt to appoint. same doctor, same time, same user/ dif user
+    // TODO: 17.03.2022 add test with appontment date next year with 400
+    // TODO: 17.03.2022 add test with date appointment before now with 400
+    // TODO: 17.03.2022 add test with appointment transfer and success use this slot by other user afterwards.
+
+
     @Autowired
     private SpecializationRepository specializationRepository;
 
