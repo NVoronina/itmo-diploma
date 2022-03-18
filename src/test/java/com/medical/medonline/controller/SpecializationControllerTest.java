@@ -27,7 +27,7 @@ class SpecializationControllerTest extends AbstractToken {
     private SpecializationRepository specializationRepository;
 
     @Test
-    public void shouldReturnedSuccessGetList() throws Exception {
+    void shouldReturnedSuccessGetList() throws Exception {
         ResultActions perform = this.mockMvc.perform(get("/api/v1/specialization/list")
                         .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())
@@ -41,7 +41,7 @@ class SpecializationControllerTest extends AbstractToken {
     }
 
     @Test
-    public void shouldReturnedSuccessPost() throws Exception {
+    void shouldReturnedSuccessPost() throws Exception {
         SpecializationRequest request = new SpecializationRequest("new");
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/specialization")
@@ -58,7 +58,7 @@ class SpecializationControllerTest extends AbstractToken {
     }
 
     @Test
-    public void shouldReturnedException() throws Exception {
+    void shouldReturnedException() throws Exception {
         SpecializationEntity entity = new SpecializationEntity();
         entity.setSpecialization("test");
         specializationRepository.save(entity);

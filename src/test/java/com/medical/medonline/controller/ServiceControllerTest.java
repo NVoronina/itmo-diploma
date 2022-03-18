@@ -29,7 +29,7 @@ class ServiceControllerTest extends AbstractToken {
     private ServiceRepository serviceRepository;
 
     @Test
-    public void shouldReturnedSuccessGetList() throws Exception {
+    void shouldReturnedSuccessGetList() throws Exception {
         ResultActions perform = this.mockMvc.perform(get("/api/v1/service/list")
                         .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())
@@ -43,7 +43,7 @@ class ServiceControllerTest extends AbstractToken {
     }
 
     @Test
-    public void shouldReturnedSuccessPost() throws Exception {
+    void shouldReturnedSuccessPost() throws Exception {
         ServiceRequest request = new ServiceRequest("new", null);
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/service")
@@ -60,7 +60,7 @@ class ServiceControllerTest extends AbstractToken {
     }
 
     @Test
-    public void shouldReturnedException() throws Exception {
+    void shouldReturnedException() throws Exception {
         ServiceEntity entity = new ServiceEntity();
         entity.setService("test");
         serviceRepository.save(entity);

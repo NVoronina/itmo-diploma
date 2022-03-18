@@ -8,7 +8,6 @@ import com.medical.medonline.dto.response.AppointmentResponse;
 import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.dto.response.PatientResponse;
 import com.medical.medonline.dto.response.ServiceResponse;
-import com.medical.medonline.entity.ServiceEntity;
 import com.medical.medonline.entity.SpecializationEntity;
 import com.medical.medonline.repository.SpecializationRepository;
 import com.medical.medonline.service.DoctorService;
@@ -37,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AppointmentControllerTests extends AbstractToken {
+class AppointmentControllerTests extends AbstractToken {
 
     // TODO: 17.03.2022 add test with double attmpt to appoint. same doctor, same time, same user/ dif user
     // TODO: 17.03.2022 add test with appontment date next year with 400
@@ -59,7 +58,7 @@ public class AppointmentControllerTests extends AbstractToken {
 
     @Test
     @Transactional
-    public void shouldReturnedSuccessGetList() throws Exception {
+    void shouldReturnedSuccessGetList() throws Exception {
         Long doctorId = createDoctor(null);
 
         ResultActions perform = this.mockMvc.perform(get("/api/v1/appointment/list?doctorId=" + doctorId)
@@ -76,7 +75,7 @@ public class AppointmentControllerTests extends AbstractToken {
 
     @Test
     @Transactional
-    public void shouldReturnedSuccessPost() throws Exception {
+    void shouldReturnedSuccessPost() throws Exception {
         Long serviceId = createService();
         Long doctorId = createDoctor(serviceId);
         Long patientId = createPatient();

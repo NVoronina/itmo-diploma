@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -52,6 +50,7 @@ public class AppointmentEntity {
     Set<ServiceEntity> services;
 
     // TODO: 17.03.2022 add duration
+    // duration calculate dynamically and depends on services included into appointment
     @Column(nullable = false)
     private LocalDateTime timeStart;
 }

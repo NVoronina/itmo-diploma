@@ -1,7 +1,7 @@
 package com.medical.medonline.exception;
 
 public class ValidationException extends RuntimeException {
-    private Integer code;
+    private final Integer code;
     public ValidationException(String message, Integer code) {
         super(message);
         this.code = code;

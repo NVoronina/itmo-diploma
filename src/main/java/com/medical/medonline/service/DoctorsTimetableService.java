@@ -2,25 +2,20 @@ package com.medical.medonline.service;
 
 import com.medical.medonline.dto.request.DoctorsTimetableRequest;
 import com.medical.medonline.dto.response.*;
-import com.medical.medonline.entity.AppointmentEntity;
 import com.medical.medonline.entity.DoctorEntity;
 import com.medical.medonline.entity.DoctorsTimetableEntity;
-import com.medical.medonline.repository.AppointmentRepository;
 import com.medical.medonline.repository.DoctorsTimetableRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Service
 public class DoctorsTimetableService {
-    final private DoctorService doctorService;
-    final private DoctorsTimetableRepository doctorsTimetableRepository;
-    final private ModelMapper modelMapper;
+    private final DoctorService doctorService;
+    private final DoctorsTimetableRepository doctorsTimetableRepository;
+    private final ModelMapper modelMapper;
 
     // TODO: 17.03.2022 add job which will extend weekly schedule to next week if its not changed  
 

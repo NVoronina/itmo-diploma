@@ -1,5 +1,6 @@
 package com.medical.medonline.client.keycloak.dto.request;
 
+import feign.form.FormProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,10 @@ import lombok.NoArgsConstructor;
 public class KeycloakTokenRequest {
     private String username;
     private String password;
-    private String grant_type;
-    private String client_id;
-    private String client_secret;
+    @FormProperty("grant_type")
+    private String grantType;
+    @FormProperty("client_id")
+    private String clientId;
+    @FormProperty("client_secret")
+    private String clientSecret;
 }

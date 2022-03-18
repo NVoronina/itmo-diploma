@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Doctors Timetable", description = "Fill doctors working day")
 public class DoctorsTimetableController {
 
-    final private DoctorsTimetableService doctorsTimetableService;
+    private final DoctorsTimetableService doctorsTimetableService;
 
     public DoctorsTimetableController(DoctorsTimetableService doctorsTimetableService) {
         this.doctorsTimetableService = doctorsTimetableService;

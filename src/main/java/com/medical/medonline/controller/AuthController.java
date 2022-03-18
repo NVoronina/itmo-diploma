@@ -4,7 +4,6 @@ import com.medical.medonline.dto.request.AuthRequest;
 import com.medical.medonline.dto.response.TokenResponse;
 import com.medical.medonline.service.KeycloakService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Authenticate")
 public class AuthController {
 
-    final private KeycloakService keycloakService;
+    private final KeycloakService keycloakService;
 
     public AuthController(KeycloakService keycloakService) {
         this.keycloakService = keycloakService;

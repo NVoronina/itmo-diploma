@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -32,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PatientControllerTests extends AbstractToken {
+class PatientControllerTests extends AbstractToken {
 
     @Autowired
     DoctorService doctorService;
@@ -44,7 +43,7 @@ public class PatientControllerTests extends AbstractToken {
 
     @Test
     @Transactional
-    public void shouldReturnedSuccessGetList() throws Exception {
+    void shouldReturnedSuccessGetList() throws Exception {
         SpecializationEntity specializationEntity = new SpecializationEntity();
         specializationEntity.setSpecialization("Стоматолог");
         specializationRepository.save(specializationEntity);
@@ -72,7 +71,7 @@ public class PatientControllerTests extends AbstractToken {
     }
 
     @Test
-    public void shouldReturnedSuccessPost() throws Exception {
+    void shouldReturnedSuccessPost() throws Exception {
         PatientRequest request = new PatientRequest(
                 "Peter",
                 "Doe",
@@ -105,7 +104,7 @@ public class PatientControllerTests extends AbstractToken {
 
     @Test
     @DependsOn({"shouldReturnedSuccessPost"})
-    public void shouldReturnedSuccessPut() throws Exception {
+    void shouldReturnedSuccessPut() throws Exception {
 
         PatientUpdateRequest request = new PatientUpdateRequest(patientCreatedId, "Natali", "+78888888888");
 
@@ -125,7 +124,7 @@ public class PatientControllerTests extends AbstractToken {
     }
 
     @Test
-    public void shouldReturnedFailPut() throws Exception {
+    void shouldReturnedFailPut() throws Exception {
 
         PatientUpdateRequest request = new PatientUpdateRequest(100500, "Natali", "+78888888888");
 

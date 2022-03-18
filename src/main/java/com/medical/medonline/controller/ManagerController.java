@@ -24,7 +24,7 @@ import java.util.List;
 @Tag(name = "Managers", description = "Controls managers APIs")
 public class ManagerController {
 
-    final private ManagerService managerService;
+    private final ManagerService managerService;
 
     public ManagerController(ManagerService managerService) {
         this.managerService = managerService;

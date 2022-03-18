@@ -2,7 +2,6 @@ package com.medical.medonline.controller;
 
 import com.medical.medonline.dto.request.AppointmentRequest;
 import com.medical.medonline.dto.response.AppointmentResponse;
-import com.medical.medonline.dto.response.AppointmentTimesResponse;
 import com.medical.medonline.dto.response.DoctorsAppointmentTimesResponse;
 import com.medical.medonline.service.AppointmentService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -24,18 +23,11 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Appointments", description = "Controls doctors appointment APIs")
 public class AppointmentController {
 
-    final private AppointmentService appointmentService;
+    private final AppointmentService appointmentService;
 
     public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
-
-//    @PostMapping
-//    public ResponseEntity<AppointmentResponse> create(@RequestBody AppointmentRequest request) {
-//
-//        return ResponseEntity.ok().body(appointmentService.createAppointment(request));
-//    }
-
 
     @GetMapping("/list")
     public ResponseEntity<DoctorsAppointmentTimesResponse> getList(@RequestParam Long doctorId) {

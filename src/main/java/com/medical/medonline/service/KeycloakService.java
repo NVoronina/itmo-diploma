@@ -31,6 +31,6 @@ public class KeycloakService {
                         clientSecret
                 ));
 
-        return new TokenResponse(response.getAccess_token());
+        return new TokenResponse(response.getAccessToken());
     }
 }

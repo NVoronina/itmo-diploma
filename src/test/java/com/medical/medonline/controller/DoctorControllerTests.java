@@ -24,13 +24,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DoctorControllerTests extends AbstractToken {
+class DoctorControllerTests extends AbstractToken {
 
     @Autowired
     private SpecializationRepository specializationRepository;
 
     @Test
-    public void shouldReturnedSuccessGetList() throws Exception {
+    void shouldReturnedSuccessGetList() throws Exception {
         ResultActions perform = this.mockMvc.perform(get("/api/v1/doctor/list")
                 .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())
@@ -45,7 +45,7 @@ public class DoctorControllerTests extends AbstractToken {
 
     @Test
     @Transactional
-    public void shouldReturnedSuccessPost() throws Exception {
+    void shouldReturnedSuccessPost() throws Exception {
         SpecializationEntity specializationEntity = new SpecializationEntity();
         specializationEntity.setSpecialization("Стоматолог");
         specializationRepository.save(specializationEntity);

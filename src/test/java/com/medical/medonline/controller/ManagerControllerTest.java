@@ -70,7 +70,7 @@ class ManagerControllerTest extends AbstractToken {
 
     @Test
     @Transactional
-    public void shouldReturnedSuccessDelete() throws Exception {
+    void shouldReturnedSuccessDelete() throws Exception {
         ManagerResponse managerResponse = managerService.createManager(new ManagerRequest(
                 "Bill",
                 "Doe",
@@ -84,7 +84,7 @@ class ManagerControllerTest extends AbstractToken {
     }
 
     @Test
-    public void shouldReturnedDeleteException() throws Exception {
+    void shouldReturnedDeleteException() throws Exception {
         this.mockMvc.perform(delete("/api/v1/manager/100500")
                         .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())

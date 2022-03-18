@@ -2,7 +2,6 @@ package com.medical.medonline.controller;
 
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
-import com.medical.medonline.entity.DoctorEntity;
 import com.medical.medonline.service.DoctorService;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -25,7 +24,7 @@ import java.util.List;
 @Tag(name = "Doctors", description = "Controls doctors APIs")
 public class DoctorController {
 
-    final private DoctorService doctorService;
+    private final DoctorService doctorService;
 
     public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;

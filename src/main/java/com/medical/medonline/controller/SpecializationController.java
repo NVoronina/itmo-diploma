@@ -24,7 +24,7 @@ import java.util.List;
 @Tag(name = "Specializations")
 public class SpecializationController {
 
-    final private SpecializationService specializationService;
+    private final SpecializationService specializationService;
 
     public SpecializationController(SpecializationService specializationService) {
         this.specializationService = specializationService;

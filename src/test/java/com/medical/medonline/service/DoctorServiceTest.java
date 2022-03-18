@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class DoctorServiceTest {
+class DoctorServiceTest {
 
     @Autowired
     private DoctorService doctorService;
 
     @Test
-    public void getDoctorException() {
+    void getDoctorException() {
         assertThrows(NotFoundException.class, () -> doctorService.getDoctorById((long)100500));
     }
 
