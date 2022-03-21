@@ -1,6 +1,7 @@
 package com.medical.medonline.controller;
 
 import com.medical.medonline.dto.request.AppointmentRequest;
+import com.medical.medonline.dto.request.AppointmentUpdateRequest;
 import com.medical.medonline.dto.response.AppointmentResponse;
 import com.medical.medonline.dto.response.DoctorsAppointmentTimesResponse;
 import com.medical.medonline.service.AppointmentService;
@@ -41,4 +42,14 @@ public class AppointmentController {
         return ResponseEntity.ok().body(appointmentService.createAppointment(request));
     }
 
+    @DeleteMapping ("/{id}")
+    public void deleteManager(@PathVariable long id) {
+        appointmentService.delete(id);
+    }
+
+    @PutMapping
+    public ResponseEntity<AppointmentResponse> update(@RequestBody AppointmentUpdateRequest request) {
+
+        return ResponseEntity.ok().body(appointmentService.updateAppointment(request));
+    }
 }

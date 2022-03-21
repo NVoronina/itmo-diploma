@@ -20,6 +20,9 @@ public class SpecializationEntity {
     private long id;
 
     // TODO: 17.03.2022 to Enum and many
+    // this field is a name of possible specialization
+    // we have API for adding new specialization name to this table, that's why I think I should't do it enum
+    // Am I wrong?
     @Column(nullable = false)
     private String specialization;
 

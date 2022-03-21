@@ -6,6 +6,7 @@ import com.medical.medonline.entity.ServiceEntity;
 import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.ServiceRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,9 +27,7 @@ public class ServiceService {
     public List<ServiceResponse> getServices() {
         List<ServiceEntity> list = serviceRepository.findAll();
 
-        return list.stream()
-                .map(service -> modelMapper.map(service, ServiceResponse.class))
-                .toList();
+        return modelMapper.map(list, new TypeToken<List<ServiceResponse>>() {}.getType());
     }
 
     public ServiceResponse createService(ServiceRequest serviceRequest) {

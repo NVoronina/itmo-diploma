@@ -50,7 +50,10 @@ public class AppointmentEntity {
     Set<ServiceEntity> services;
 
     // TODO: 17.03.2022 add duration
-    // duration calculate dynamically and depends on services included into appointment
+    // DONE
     @Column(nullable = false)
     private LocalDateTime timeStart;
+
+    @Column(nullable = false)
+    private LocalDateTime timeEnd;
 }

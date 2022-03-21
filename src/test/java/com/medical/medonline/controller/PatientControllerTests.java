@@ -57,7 +57,6 @@ class PatientControllerTests extends AbstractToken {
         );
         DoctorResponse doctorResponse = doctorService.createDoctor(request);
 
-        //todo save appointment
         ResultActions perform = this.mockMvc.perform(get("/api/v1/patient/list?doctorId=" + doctorResponse.getId())
                 .header("Authorization", "Bearer " + TOKEN))
                 .andDo(print())

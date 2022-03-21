@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<AppointmentEntity, Long> {
     List<AppointmentEntity> getAppointmentEntitiesByDoctorAndTimeStartBeforeOrderByTimeStart(DoctorEntity doctor, LocalDateTime dateTime);
+    List<AppointmentEntity> getAppointmentEntitiesByDoctorAndTimeStartAndTimeEnd(DoctorEntity doctor, LocalDateTime start, LocalDateTime end);
 }

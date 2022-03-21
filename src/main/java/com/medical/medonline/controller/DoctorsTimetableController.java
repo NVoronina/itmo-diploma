@@ -38,7 +38,7 @@ public class DoctorsTimetableController {
     @GetMapping("/list")
     public ResponseEntity<DoctorsTimetableResponse> getTimetables(@RequestParam Long doctorId) {
 
-        return ResponseEntity.ok().body(doctorsTimetableService.getWeekTimetables(doctorId));
+        return ResponseEntity.ok().body(doctorsTimetableService.getWeekTimetablesByDoctorId(doctorId));
     }
 
     @DeleteMapping ("/{id}")

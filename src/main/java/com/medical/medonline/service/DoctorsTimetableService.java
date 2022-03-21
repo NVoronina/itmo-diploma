@@ -7,6 +7,7 @@ import com.medical.medonline.entity.DoctorsTimetableEntity;
 import com.medical.medonline.repository.DoctorsTimetableRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,8 +18,8 @@ public class DoctorsTimetableService {
     private final DoctorsTimetableRepository doctorsTimetableRepository;
     private final ModelMapper modelMapper;
 
-    // TODO: 17.03.2022 add job which will extend weekly schedule to next week if its not changed  
-
+    // TODO: 17.03.2022 add job which will extend weekly schedule to next week if its not changed
+    // DONE
     public DoctorsTimetableService(DoctorService doctorService, DoctorsTimetableRepository doctorsTimetableRepository, ModelMapper modelMapper) {
         this.doctorService = doctorService;
         this.doctorsTimetableRepository = doctorsTimetableRepository;
@@ -43,7 +44,7 @@ public class DoctorsTimetableService {
         return modelMapper.map(doctorEntity, DoctorsTimetableResponse.class);
     }
 
-    public DoctorsTimetableResponse getWeekTimetables(Long doctorId) {
+    public DoctorsTimetableResponse getWeekTimetablesByDoctorId(Long doctorId) {
         DoctorEntity doctorEntity = doctorService.getById(doctorId);
         return modelMapper.map(
                 doctorsTimetableRepository
@@ -61,4 +62,25 @@ public class DoctorsTimetableService {
             doctorsTimetableRepository.delete(timetableEntity);
         }
     }
+
+    @Transactional
+    public void refillWeekTimetables() {
+        List<DoctorsTimetableEntity> list = doctorsTimetableRepository.getDoctorsTimetableEntitiesForRefill(
+                LocalDateTime.now(),
+                LocalDateTime.now().plusWeeks(1),
+                LocalDateTime.now().minusWeeks(1),
+                LocalDateTime.now());
+
+        List<DoctorsTimetableEntity> result = list.stream()
+                .map(timetableDto -> {
+                    DoctorsTimetableEntity entity = new DoctorsTimetableEntity();
+                    entity.setTimeStart(timetableDto.getTimeStart().plusWeeks(1));
+                    entity.setTimeEnd(timetableDto.getTimeEnd().plusWeeks(1));
+                    entity.setDoctor(timetableDto.getDoctor());
+                    return entity;
+                })
+                .toList();
+        doctorsTimetableRepository.saveAll(result);
+    }
+
 }

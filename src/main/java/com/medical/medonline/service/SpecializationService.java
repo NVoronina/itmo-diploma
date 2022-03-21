@@ -7,10 +7,10 @@ import com.medical.medonline.exception.NotFoundException;
 import com.medical.medonline.exception.ValidationException;
 import com.medical.medonline.repository.SpecializationRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SpecializationService {
@@ -24,20 +24,18 @@ public class SpecializationService {
 
     public SpecializationEntity getById(Long id) {
         // TODO: 17.03.2022 use orelseThrow
-        Optional<SpecializationEntity> specializationEntity = specializationRepository.findById(id);
-        if (specializationEntity.isEmpty()) {
-            throw new NotFoundException("Specialization with id " + id + " not found", 1000);
-        }
-        return specializationEntity.get();
+        // DONE
+        return specializationRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Specialization with id " + id + " not found", 1000));
     }
 
     public List<SpecializationResponse> getSpecializations() {
         List<SpecializationEntity> list = specializationRepository.findAll();
-
         // TODO: 17.03.2022 use  TypeReference approach
-        return list.stream()
-                .map(specialization -> modelMapper.map(specialization, SpecializationResponse.class))
-                .toList();
+        // DONE I am not sure how and did't understand why, but it's WORK
+
+        return modelMapper.map(list, new TypeToken<List<SpecializationResponse>>() {}.getType());
     }
 
     public SpecializationResponse createSpecialization(SpecializationRequest specializationRequest) {

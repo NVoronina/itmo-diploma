@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -80,11 +79,8 @@ public class DoctorService {
     }
 
     public DoctorEntity getById(Long doctorId) throws NotFoundException {
-        Optional<DoctorEntity> doctorEntity = doctorRepository.findById(doctorId);
-        if (doctorEntity.isEmpty()) {
-            throw new NotFoundException("Doctor with id " + doctorId + " not found", 1000);
-        }
-
-        return doctorEntity.get();
+        return doctorRepository
+                .findById(doctorId)
+                .orElseThrow(() -> new NotFoundException("Doctor with id " + doctorId + " not found", 1000));
     }
 }
