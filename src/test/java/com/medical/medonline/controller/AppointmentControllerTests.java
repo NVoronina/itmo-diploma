@@ -170,7 +170,7 @@ class AppointmentControllerTests extends AbstractToken {
         String content = response.getContentAsString();
         AppointmentResponse responseAppoint = objectMapper.readValue(content, AppointmentResponse.class);
 
-        assertEquals(400, response.getStatus());
+        assertEquals(200, response.getStatus());
     }
 
     @Test
