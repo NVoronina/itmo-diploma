@@ -164,9 +164,13 @@ class AppointmentControllerTests extends AbstractToken {
                 .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
-        this.mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().is(400));
+        ResultActions perform = this.mockMvc.perform(requestBuilder);
+        MvcResult mvcResult = perform.andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+        String content = response.getContentAsString();
+        AppointmentResponse responseAppoint = objectMapper.readValue(content, AppointmentResponse.class);
+
+        assertEquals(400, response.getStatus());
     }
 
     @Test
@@ -190,9 +194,13 @@ class AppointmentControllerTests extends AbstractToken {
                 .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
-        this.mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().is(400));
+        ResultActions perform = this.mockMvc.perform(requestBuilder);
+        MvcResult mvcResult = perform.andReturn();
+        MockHttpServletResponse response = mvcResult.getResponse();
+        String content = response.getContentAsString();
+        AppointmentResponse responseAppoint = objectMapper.readValue(content, AppointmentResponse.class);
+
+        assertEquals(400, response.getStatus());
     }
 
     @Test
