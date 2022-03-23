@@ -1,5 +1,6 @@
 package com.medical.medonline.middleware;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.medical.medonline.dto.response.ErrorResponse;
 import com.medical.medonline.exception.NotFoundException;
 import com.medical.medonline.exception.ValidationException;
@@ -26,5 +27,10 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> resourceValidationException(EntityNotFoundException ex) {
         return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), 4040), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(JsonMappingException.class)
+    public ResponseEntity<ErrorResponse> resourceValidationException(JsonMappingException ex) {
+        return new ResponseEntity<>(new ErrorResponse(ex.getMessage(), 4041), HttpStatus.BAD_REQUEST);
     }
 }

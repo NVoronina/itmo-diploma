@@ -1,5 +1,6 @@
 package com.medical.medonline.service;
 
+import com.medical.medonline.converter.CustomConverter;
 import com.medical.medonline.dto.request.ManagerRequest;
 import com.medical.medonline.dto.response.ManagerResponse;
 import com.medical.medonline.entity.*;
@@ -15,11 +16,13 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final CustomConverter converter;
 
-    public ManagerService(ManagerRepository managerRepository, ModelMapper modelMapper, UserService userService) {
+    public ManagerService(ManagerRepository managerRepository, ModelMapper modelMapper, UserService userService, CustomConverter converter) {
         this.managerRepository = managerRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.converter = converter;
     }
 
     public List<ManagerResponse> getManagers() {
@@ -53,14 +56,11 @@ public class ManagerService {
     }
 
     private ManagerResponse prepareResponse(ManagerEntity entity) {
-        ManagerResponse response = modelMapper.map(entity, ManagerResponse.class);
-        // TODO: 17.03.2022 nice! fix it, put user with updatemethod in mapper
-        response.setName(entity.getUser().getName());
-        response.setSurname(entity.getUser().getSurname());
-        response.setSecondName(entity.getUser().getSecondName());
-        response.setEmail(entity.getUser().getEmail());
+        modelMapper.addConverter(converter.getManagerConverter());
 
-        return response;
+        return modelMapper.map(entity, ManagerResponse.class);
+        // TODO: 17.03.2022 nice! fix it, put user with updatemethod in mapper
+        // DONE
     }
 
 }

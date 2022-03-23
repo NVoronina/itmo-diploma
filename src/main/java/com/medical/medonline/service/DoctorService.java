@@ -1,5 +1,6 @@
 package com.medical.medonline.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medical.medonline.dto.request.DoctorRequest;
 import com.medical.medonline.dto.response.DoctorResponse;
 import com.medical.medonline.entity.*;
@@ -21,7 +22,7 @@ public class DoctorService {
     private final ServiceService serviceService;
     private final ModelMapper modelMapper;
 
-    public DoctorService(DoctorRepository doctorRepository, UserService userService, SpecializationService specializationService, ServiceService serviceService, ModelMapper modelMapper) {
+    public DoctorService(DoctorRepository doctorRepository, UserService userService, SpecializationService specializationService, ServiceService serviceService, ModelMapper modelMapper, ObjectMapper objectMapper) {
         this.doctorRepository = doctorRepository;
         this.userService = userService;
         this.specializationService = specializationService;

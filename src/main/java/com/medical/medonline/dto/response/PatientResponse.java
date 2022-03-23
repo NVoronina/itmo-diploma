@@ -16,5 +16,4 @@ public class PatientResponse {
     private String contactName;
     private String contactPhone;
     private String snils;
-    private String passportNumber;
 }

@@ -84,6 +84,14 @@ public class AppointmentService {
         if (appointmentEntity.getTimeStart() == null) {
             throw new NotFoundException("No appointment found", 1009);
         }
+        LocalDateTime timeEnd = appointmentEntity.getTimeEnd();
+        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentEntitiesByDoctorAndTimeStartAndTimeEnd(
+                appointmentEntity.getDoctor(),
+                LocalDateTime.parse(request.getTimeStart()),
+                timeEnd);
+        if (!appointmentsExist.isEmpty()) {
+            throw new ValidationException("Selected datetime is already used", 1011);
+        }
         LocalDateTime timeStart = LocalDateTime.parse(request.getTimeStart());
         if (timeStart.isBefore(LocalDateTime.now()) || timeStart.isAfter(LocalDateTime.now().plusYears(1))) {
             throw new ValidationException("Date could't be before now or grater than year", 1005);
