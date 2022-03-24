@@ -14,5 +14,5 @@ public interface AppointmentRepository extends JpaRepository<AppointmentEntity, 
     List<AppointmentEntity> getAppointmentEntitiesByDoctorAndTimeStartBeforeOrderByTimeStart(DoctorEntity doctor, LocalDateTime dateTime);
 
     @Query("from AppointmentEntity a where a.doctor = :doctor and a.timeStart >= :start and a.timeEnd <= :end")
-    List<AppointmentEntity> getAppointmentsByTimeRangeAndDoctorId(DoctorEntity doctor, LocalDateTime start, LocalDateTime end);
+    List<AppointmentEntity> getAppointmentsByTimeRangeAndDoctor(DoctorEntity doctor, LocalDateTime start, LocalDateTime end);
 }

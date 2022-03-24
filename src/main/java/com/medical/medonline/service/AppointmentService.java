@@ -54,16 +54,18 @@ public class AppointmentService {
         }).sum();
         LocalDateTime timeEnd = LocalDateTime.parse(request.getTimeStart()).plusMinutes(appointmentDuration);
         List<AppointmentEntity> all = appointmentRepository.findAll();
-        System.out.println("--------------- doctorId " + request.getDoctorId() + " entitydoc " + doctorEntity.getId() + "size " + appointmentRepository.findAll().size());
-        if (appointmentRepository.findAll().size() > 0) {
-            System.out.println("--------------- obj " + all.stream().findFirst().get().getTimeStart());
-            System.out.println("--------------- obj " + all.stream().findFirst().get().getTimeEnd());
-            System.out.println("--------------- obj " + all.stream().findFirst().get().getDoctor().getId());
+        if (all.size() > 0) {
+            System.out.println("--------------- doctorId " + request.getDoctorId() + " entitydoc " + doctorEntity.getId());
+            System.out.println("--------------- obj now in db " + all.stream().findFirst().get().getTimeStart());
+            System.out.println("--------------- obj now in db " + all.stream().findFirst().get().getTimeEnd());
+            System.out.println("--------------- obj now in db " + all.stream().findFirst().get().getDoctor().getId());
         }
-        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctorId(
+        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctor(
                 doctorEntity,
                 LocalDateTime.parse(request.getTimeStart()),
                 timeEnd);
+        System.out.println("--------------- exist size " + appointmentsExist.size());
+
         if (!appointmentsExist.isEmpty()) {
             throw new ValidationException("Selected datetime is already used", 1011);
         }
@@ -93,7 +95,7 @@ public class AppointmentService {
             throw new NotFoundException("No appointment found", 1009);
         }
         LocalDateTime timeEnd = appointmentEntity.getTimeEnd();
-        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctorId(
+        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctor(
                 appointmentEntity.getDoctor(),
                 LocalDateTime.parse(request.getTimeStart()),
                 timeEnd);
