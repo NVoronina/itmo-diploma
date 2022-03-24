@@ -181,16 +181,10 @@ class AppointmentControllerTests extends AbstractToken {
         AppointmentRequest request = new AppointmentRequest(
                 time,
                 doctorId, patientId, listServices);
-        MockHttpServletRequestBuilder requestBuilder = post("/api/v1/appointment")
-                .header("Authorization", "Bearer " + TOKEN)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request));
-        this.mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().is(200));
+        appointmentService.createAppointment(request);
 
         request.setPatientId(createPatient());
-        requestBuilder = post("/api/v1/appointment")
+        MockHttpServletRequestBuilder requestBuilder = post("/api/v1/appointment")
                 .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request));
