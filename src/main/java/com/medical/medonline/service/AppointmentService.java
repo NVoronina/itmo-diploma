@@ -53,7 +53,12 @@ public class AppointmentService {
             return el.getTime();
         }).sum();
         LocalDateTime timeEnd = LocalDateTime.parse(request.getTimeStart()).plusMinutes(appointmentDuration);
+        List<AppointmentEntity> all = appointmentRepository.findAll();
         System.out.println("--------------- size " + appointmentRepository.findAll().size());
+        if (appointmentRepository.findAll().size() > 0) {
+            System.out.println("--------------- obj " + all.stream().findFirst().get().getTimeStart());
+            System.out.println("--------------- obj " + all.stream().findFirst().get().getTimeEnd());
+        }
         List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctorId(
                 doctorEntity,
                 LocalDateTime.parse(request.getTimeStart()),
