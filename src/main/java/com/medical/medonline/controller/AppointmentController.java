@@ -43,7 +43,7 @@ public class AppointmentController {
     }
 
     @DeleteMapping ("/{id}")
-    public void deleteManager(@PathVariable long id) {
+    public void delete(@PathVariable long id) {
         appointmentService.delete(id);
     }
 

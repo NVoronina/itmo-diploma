@@ -53,7 +53,7 @@ public class AppointmentService {
             return el.getTime();
         }).sum();
         LocalDateTime timeEnd = LocalDateTime.parse(request.getTimeStart()).plusMinutes(appointmentDuration);
-        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentEntitiesByDoctorAndTimeStartAndTimeEnd(
+        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctorId(
                 doctorEntity,
                 LocalDateTime.parse(request.getTimeStart()),
                 timeEnd);
@@ -85,7 +85,7 @@ public class AppointmentService {
             throw new NotFoundException("No appointment found", 1009);
         }
         LocalDateTime timeEnd = appointmentEntity.getTimeEnd();
-        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentEntitiesByDoctorAndTimeStartAndTimeEnd(
+        List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctorId(
                 appointmentEntity.getDoctor(),
                 LocalDateTime.parse(request.getTimeStart()),
                 timeEnd);
