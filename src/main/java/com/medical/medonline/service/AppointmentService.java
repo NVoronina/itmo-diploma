@@ -53,6 +53,7 @@ public class AppointmentService {
             return el.getTime();
         }).sum();
         LocalDateTime timeEnd = LocalDateTime.parse(request.getTimeStart()).plusMinutes(appointmentDuration);
+        System.out.println("--------------- size " + appointmentRepository.findAll().size());
         List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctorId(
                 doctorEntity,
                 LocalDateTime.parse(request.getTimeStart()),
@@ -60,6 +61,7 @@ public class AppointmentService {
         if (!appointmentsExist.isEmpty()) {
             throw new ValidationException("Selected datetime is already used", 1011);
         }
+        System.out.println("---------------" + timeEnd.toString() + "-------------" + LocalDateTime.parse(request.getTimeStart()).toString());
         AppointmentEntity appointmentEntity = new AppointmentEntity();
         appointmentEntity.setDoctor(doctorEntity);
         appointmentEntity.setServices(services);
@@ -67,7 +69,7 @@ public class AppointmentService {
         appointmentEntity.setTimeStart(LocalDateTime.parse(request.getTimeStart()));
         appointmentEntity.setTimeEnd(timeEnd);
 
-        appointmentRepository.save(appointmentEntity);
+        appointmentRepository.saveAndFlush(appointmentEntity);
 
         return modelMapper.map(appointmentEntity, AppointmentResponse.class);
     }
