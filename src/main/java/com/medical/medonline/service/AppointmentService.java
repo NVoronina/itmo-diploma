@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class AppointmentService {
 
     public AppointmentResponse createAppointment(AppointmentRequest request) {
         DoctorEntity doctorEntity = doctorService.getById(request.getDoctorId());
-        LocalDateTime timeStart = LocalDateTime.parse(request.getTimeStart());
+        LocalDateTime timeStart = LocalDateTime.parse(request.getTimeStart()).truncatedTo(ChronoUnit.MINUTES);
         Set<ServiceEntity> services = doctorEntity.getServices()
                 .stream()
                 .filter(serviceEntity -> request.getServiceIds().contains(serviceEntity.getId()))
@@ -52,32 +53,23 @@ public class AppointmentService {
             }
             return el.getTime();
         }).sum();
-        LocalDateTime timeEnd = LocalDateTime.parse(request.getTimeStart()).plusMinutes(appointmentDuration);
-        List<AppointmentEntity> all = appointmentRepository.findAll();
-        if (all.size() > 0) {
-            System.out.println("--------------- doctorId " + request.getDoctorId() + " entitydoc " + doctorEntity.getId());
-            System.out.println("--------------- obj now in db " + all.stream().findFirst().get().getTimeStart());
-            System.out.println("--------------- obj now in db " + all.stream().findFirst().get().getTimeEnd());
-            System.out.println("--------------- obj now in db " + all.stream().findFirst().get().getDoctor().getId());
-        }
+        LocalDateTime timeEnd = LocalDateTime.parse(request.getTimeStart()).plusMinutes(appointmentDuration).truncatedTo(ChronoUnit.MINUTES);
+
         List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctor(
                 doctorEntity,
-                LocalDateTime.parse(request.getTimeStart()),
+                timeStart,
                 timeEnd);
-        System.out.println("--------------- exist size " + appointmentsExist.size());
-
         if (!appointmentsExist.isEmpty()) {
             throw new ValidationException("Selected datetime is already used", 1011);
         }
-        System.out.println("---------------" + timeEnd.toString() + "-------------" + LocalDateTime.parse(request.getTimeStart()).toString());
         AppointmentEntity appointmentEntity = new AppointmentEntity();
         appointmentEntity.setDoctor(doctorEntity);
         appointmentEntity.setServices(services);
         appointmentEntity.setPatient(patientEntity);
-        appointmentEntity.setTimeStart(LocalDateTime.parse(request.getTimeStart()));
+        appointmentEntity.setTimeStart(timeStart);
         appointmentEntity.setTimeEnd(timeEnd);
 
-        appointmentRepository.saveAndFlush(appointmentEntity);
+        appointmentRepository.save(appointmentEntity);
 
         return modelMapper.map(appointmentEntity, AppointmentResponse.class);
     }
@@ -94,19 +86,22 @@ public class AppointmentService {
         if (appointmentEntity.getTimeStart() == null) {
             throw new NotFoundException("No appointment found", 1009);
         }
-        LocalDateTime timeEnd = appointmentEntity.getTimeEnd();
+        LocalDateTime timeStart = LocalDateTime.parse(request.getTimeStart()).truncatedTo(ChronoUnit.MINUTES);
+        long duration = ChronoUnit.MINUTES.between(appointmentEntity.getTimeStart(), appointmentEntity.getTimeEnd());
+        LocalDateTime timeEnd = timeStart.plusMinutes(duration).truncatedTo(ChronoUnit.MINUTES);
+
         List<AppointmentEntity> appointmentsExist = appointmentRepository.getAppointmentsByTimeRangeAndDoctor(
                 appointmentEntity.getDoctor(),
-                LocalDateTime.parse(request.getTimeStart()),
+                timeStart,
                 timeEnd);
         if (!appointmentsExist.isEmpty()) {
             throw new ValidationException("Selected datetime is already used", 1011);
         }
-        LocalDateTime timeStart = LocalDateTime.parse(request.getTimeStart());
         if (timeStart.isBefore(LocalDateTime.now()) || timeStart.isAfter(LocalDateTime.now().plusYears(1))) {
             throw new ValidationException("Date could't be before now or grater than year", 1005);
         }
         appointmentEntity.setTimeStart(timeStart);
+        appointmentEntity.setTimeEnd(timeEnd);
         appointmentRepository.save(appointmentEntity);
 
         return modelMapper.map(appointmentEntity, AppointmentResponse.class);

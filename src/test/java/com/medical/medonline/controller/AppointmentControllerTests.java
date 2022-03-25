@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,7 +98,7 @@ class AppointmentControllerTests extends AbstractToken {
     void shouldReturnedSuccessPost() throws Exception {
 
         AppointmentRequest request = new AppointmentRequest(
-                LocalDateTime.now().plusWeeks(1).toString(), doctorId, patientId, listServices);
+                LocalDateTime.now().plusWeeks(1).truncatedTo(ChronoUnit.MINUTES).toString(), doctorId, patientId, listServices);
         MockHttpServletRequestBuilder requestBuilder = post("/api/v1/appointment")
                 .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -177,7 +179,7 @@ class AppointmentControllerTests extends AbstractToken {
     @Transactional
     void shouldReturnedErrorDoublePostDifferentPatient() throws Exception {
 
-        String time = LocalDateTime.now().plusDays(2).toString();
+        String time = LocalDateTime.now().plusDays(2).truncatedTo(ChronoUnit.MINUTES).toString();
         AppointmentRequest request = new AppointmentRequest(
                 time,
                 doctorId, patientId, listServices);
@@ -201,12 +203,13 @@ class AppointmentControllerTests extends AbstractToken {
     @Transactional
     void shouldSuccessChangeAppointment() throws Exception {
 
+        LocalDateTime baseTime = LocalDateTime.now();
         AppointmentRequest createRequest = new AppointmentRequest(
-                LocalDateTime.now().plusWeeks(1).toString(), doctorId, patientId, listServices);
+                baseTime.plusWeeks(1).truncatedTo(ChronoUnit.MINUTES).toString(), doctorId, patientId, listServices);
         Long appointmentId = appointmentService.createAppointment(createRequest).getId();
         AppointmentUpdateRequest request = new AppointmentUpdateRequest(
                 appointmentId,
-                LocalDateTime.now().plusWeeks(1).toString()
+                baseTime.plusWeeks(2).truncatedTo(ChronoUnit.MINUTES).toString()
         );
         MockHttpServletRequestBuilder requestBuilder = put("/api/v1/appointment")
                 .header("Authorization", "Bearer " + TOKEN)
@@ -221,23 +224,21 @@ class AppointmentControllerTests extends AbstractToken {
         assertEquals(request.getTimeStart(), responseAppoint.getTimeStart());
         assertEquals(request.getId(), responseAppoint.getId());
 
-        Long otherPatientId = createPatient();
-        AppointmentRequest createOtherUserRequest = new AppointmentRequest(
-                LocalDateTime.now().plusWeeks(1).toString(), doctorId, otherPatientId, listServices);
+        createRequest.setPatientId(createPatient());
 
         requestBuilder = post("/api/v1/appointment")
                 .header("Authorization", "Bearer " + TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(createOtherUserRequest));
+                .content(objectMapper.writeValueAsString(createRequest));
         perform = this.mockMvc.perform(requestBuilder);
         mvcResult = perform.andReturn();
         response = mvcResult.getResponse();
         content = response.getContentAsString();
         AppointmentResponse responseAppointOther = objectMapper.readValue(content, AppointmentResponse.class);
 
-        assertEquals(createOtherUserRequest.getDoctorId(), responseAppointOther.getDoctor().getId());
-        assertEquals(createOtherUserRequest.getServiceIds().size(), responseAppointOther.getServices().size());
-        assertEquals(createOtherUserRequest.getPatientId(), responseAppointOther.getPatient().getId());
+        assertEquals(200, response.getStatus());
+        assertEquals(createRequest.getServiceIds().size(), responseAppointOther.getServices().size());
+        assertEquals(createRequest.getPatientId(), responseAppointOther.getPatient().getId());
     }
 
     private Long createService() {
