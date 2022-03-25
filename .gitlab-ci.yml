@@ -61,7 +61,6 @@ deploy-dev:
   <<: *deploy
   variables:
     ENV_PREFIX: "dev"
-    SERVER: ec2-13-48-105-97.eu-north-1.compute.amazonaws.com
   environment:
     name: dev
 
