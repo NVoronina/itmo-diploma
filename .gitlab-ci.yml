@@ -5,12 +5,11 @@ services:
 variables:
   DOCKER_DRIVER: overlay
   SPRING_PROFILES_ACTIVE: gitlab-ci
-  SERVER: ec2-13-48-105-97.eu-north-1.compute.amazonaws.com
 
 stages:
   - build
   - package
-#  - deploy
+  - deploy
 
 maven-build:
   image: maven:3-openjdk-17
@@ -52,7 +51,6 @@ docker-build:
       docker pull $CI_REGISTRY_IMAGE;
       docker run $CI_REGISTRY_IMAGE
       docker logout registry.gitlab.com"
-
 
 deploy-dev:
   stage: deploy
