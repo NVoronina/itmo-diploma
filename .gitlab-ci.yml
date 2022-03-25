@@ -31,6 +31,7 @@ docker-build:
   - mkdir -p ~/.ssh
   - 'which ssh-agent || ( apk update && apk add openssh openssh-client )'
   - echo "$DEPLOY_SERVER_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+  - echo "$DEPLOY_SERVER_PRIVATE_KEY"
   - chmod 600 ~/.ssh/id_rsa
   - eval "$(ssh-agent -s)"
   - ssh-add ~/.ssh/id_rsa
