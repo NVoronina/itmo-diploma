@@ -49,8 +49,6 @@ public class AppointmentEntity {
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     Set<ServiceEntity> services;
 
-    // TODO: 17.03.2022 add duration
-    // DONE
     @Column(nullable = false)
     private LocalDateTime timeStart;
 

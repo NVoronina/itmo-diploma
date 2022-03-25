@@ -23,8 +23,7 @@ public class SpecializationService {
     }
 
     public SpecializationEntity getById(Long id) {
-        // TODO: 17.03.2022 use orelseThrow
-        // DONE
+
         return specializationRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Specialization with id " + id + " not found", 1000));
@@ -32,8 +31,6 @@ public class SpecializationService {
 
     public List<SpecializationResponse> getSpecializations() {
         List<SpecializationEntity> list = specializationRepository.findAll();
-        // TODO: 17.03.2022 use  TypeReference approach
-        // DONE I am not sure how and did't understand why, but it's WORK
 
         return modelMapper.map(list, new TypeToken<List<SpecializationResponse>>() {}.getType());
     }

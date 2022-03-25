@@ -59,8 +59,6 @@ public class ManagerService {
         modelMapper.addConverter(converter.getManagerConverter());
 
         return modelMapper.map(entity, ManagerResponse.class);
-        // TODO: 17.03.2022 nice! fix it, put user with updatemethod in mapper
-        // DONE
     }
 
 }
