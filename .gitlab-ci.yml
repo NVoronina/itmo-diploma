@@ -35,14 +35,14 @@ docker-build:
   - eval "$(ssh-agent -s)"
   - ssh-add ~/.ssh/id_rsa
   - ssh-keyscan -H $SERVER >> ~/.ssh/known_hosts
+  - cat ~/.ssh/known_hosts
+  - cat ~/.ssh/id_rsa
 # ====== END Utils ======
 
 # ====== DEPLOY stage jobs ======
 .deploy: &deploy
   #  tags:
   #    - ding
-  variables:
-    SERVER: ec2-13-48-105-97.eu-north-1.compute.amazonaws.com
   services:
     - name: docker:19.03-dind
   before_script: *setup_ssh
